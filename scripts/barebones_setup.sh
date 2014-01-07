@@ -1,7 +1,8 @@
 #!/bin/bash
 
+sudo rpm -ivh http://ftp.osuosl.org/pub/fedora-epel/6/i386/epel-release-6-8.noarch.rpm
 vbox_version=`cat ~/.vbox_version`
-sudo yum -y install kernel-devel-$(uname -r) make gcc perl
+sudo yum -y install kernel-devel-$(uname -r) make gcc perl puppet
 cd /usr/src/kernels/$(ls -1 /usr/src/kernels/)/include/drm/  
 sudo ln -s /usr/include/drm/drm.h drm.h  
 sudo ln -s /usr/include/drm/drm_sarea.h drm_sarea.h  
