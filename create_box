@@ -1,0 +1,11 @@
+#!/bin/bash
+ 
+set -e
+ 
+#export PACKER_LOG=1
+echo "$(date)"
+[[ ! -f ubuntu-13.10-amd64.box ]] || rm -f ubuntu-13.10-amd64.box
+time packer build ubuntu-13.10-amd64.json
+vagrant box remove ubuntu-13.10-amd64 || true
+vagrant box add ubuntu-13.10-amd64 ubuntu-13.10-amd64.box
+echo "$(date)"
