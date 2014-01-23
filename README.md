@@ -1,7 +1,7 @@
 packer-ubuntu
 =============
 
-This packer config produces a minimal CentOS vagrant box for VirtualBox with guest additions and Puppet installed.
+This packer config produces a minimal Ubuntu vagrant box for VirtualBox with guest additions and Puppet installed.
 
 I used the following tools and versions for the build infrastructure:
 * [Ubuntu Linux](http://ubuntu.com/) (13.10 amd64)
