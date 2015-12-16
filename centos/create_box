@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -e
+
+#export PACKER_LOG=1
+[[ ! -f centos-6.5-x86_64.box ]] || rm -f centos-6.5-x86_64.box
+packer build centos-6.5-x86_64.json
+vagrant box remove centos-6.5-x86_64 || true
+vagrant box add centos-6.5-x86_64 centos-6.5-x86_64.box

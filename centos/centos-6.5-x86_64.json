@@ -1,0 +1,37 @@
+{
+  "builders": [
+    {
+      "type": "virtualbox-iso",
+      "guest_os_type": "RedHat_64",
+      "iso_url": "http://centos.mirror.netriplex.com/6/isos/x86_64/CentOS-6.5-x86_64-minimal.iso",
+      "iso_checksum": "0d9dc37b5dd4befa1c440d2174e88a87",
+      "iso_checksum_type": "md5",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_wait_timeout": "600s",
+      "boot_command": ["<esc>", "<wait>","linux ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg", "<enter>"],
+      "boot_wait": "5s",
+      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+      "http_directory": "http",
+      "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
+      "vm_name": "centos-6.5-x86_64",
+      "headless": true,
+      "virtualbox_version_file": ".vbox_version"
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "script": "scripts/barebones_setup.sh"
+    }
+  ],
+
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "compression_level": 9,
+      "output": "centos-6.5-x86_64.box"
+    }
+  ]
+}
