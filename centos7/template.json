@@ -1,14 +1,20 @@
 {
-  "variables": {
-      "atlas_token": "{{env `CENTOS6_PUSH_TOKEN`}}"
-  },
+  "push": {
+      "name": "",
+      "vcs": true
+    },
+    "variables": {
+        "atlas_username": "{{env `ATLAS_USERNAME`}}",
+        "atlas_boxname": "{{env `ATLAS_BOXNAME`}}",
+        "atlas_token": "{{env `ATLAS_TOKEN`}}"
+    },
 
   "builders": [
     {
       "type": "virtualbox-iso",
       "guest_os_type": "RedHat_64",
-      "iso_url": "http://distro.ibiblio.org/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1503-01.iso",
-      "iso_checksum": "d07ab3e615c66a8b2e9a50f4852e6a77",
+      "iso_url": "http://mirror.cogentco.com/pub/linux/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1511.iso",
+      "iso_checksum": "88c0437f0a14c6e2c94426df9d43cd67",
       "iso_checksum_type": "md5",
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
@@ -27,20 +33,38 @@
   "provisioners": [
     {
       "type": "shell",
-      "script": "scripts/barebones_setup.sh"
+      "script": "scripts/prepare.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/setup.sh",
+      "pause_before": "45s"
     }
   ],
 
   "push": {
-      "name": "bkyoung/centos7",
+      "name": "{{user `atlas_username`}}/{{user `atlas_boxname`}}",
       "token": "{{user `atlas_token`}}"
     },
 
   "post-processors": [
-    {
+    [{
       "type": "vagrant",
       "compression_level": 9,
       "output": "vagrant.box"
-    }
+    },
+    {
+        "type": "atlas",
+        "only": ["virtualbox-iso"],
+        "token": "{{user `atlas_token`}}",
+        "artifact": "{{user `atlas_username`}}/{{user `atlas_boxname`}}",
+        "artifact_type": "vagrant.box",
+        "metadata": {
+            "provider": "virtualbox",
+            "created_at": "{{timestamp}}",
+            "description": "* Used CentOS-7-x86_64-Minimal-1511.iso to build.  * Virtualbox guest additions 5.0.x.",
+            "version": "{{isotime \"20060102\"}}"
+        }
+    }]
   ]
 }
